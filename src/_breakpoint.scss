@@ -1,0 +1,208 @@
+////
+/// @group 04-breakpoint
+////
+@use "sass:map";
+@use "sass:meta";
+@use "sass:list";
+@use "sass:math";
+@use "sass:string";
+@use "units";
+@use "config";
+
+/// Umfasst den übergebenen Inhalt in eine **min/max-width/height** Media Query. Es können Breakpoints aus einer hinterlegten Map ausgewählt oder eigene Werte übergeben werden.
+/// @param {String | Number} $breakpoint - Key, der $breakpoints Map oder eigener Wert
+/// @param {String} $minmax ["min"] - Soll eine min- oder max-width Media Query erzeugt werden?
+/// @param {String} $feature ["width"] - Soll eine width oder height Media Query erzeugt werden?
+/// @param {Map} $breakpoints [config.get("breakpoints")] - Map, auf die der erste Parameter zugreift
+/// @example scss
+/// .element {
+///     grid-column-end: -1;
+///     @include adventure.breakpoint("large") {
+///         grid-column-end: span 3;
+///     }
+/// }
+/// @example scss - Custom min-height Media Query
+/// .top-bar {
+///     @include adventure.breakpoint(700px, $feature: "height") {
+///         position: sticky;
+///     }
+/// }
+/// @example scss - max-width Media Query mit abweichender Breakpoints Map
+/// .hamburger-menu-toggle {
+///     display: none;
+///     @include adventure.breakpoint("medium", $minmax: "max", $breakpoints: foundation.breakpoints) {
+///         display: block;
+///     }
+/// }
+@mixin breakpoint($breakpoint, $minmax: "min", $feature: "width", $breakpoints: config.get("breakpoints")) {
+    $breakpoint-value: _convert-value($breakpoint, $breakpoints);
+    $minmax-value: _validate-minmax($minmax);
+    $feature-value: _validate-feature($feature);
+
+    @if (_is-named-breakpoint($breakpoint, $breakpoints) and $minmax-value == "max") {
+        $breakpoint-value: _prevent-collision($breakpoint-value);
+    }
+
+    @media screen and (#{$minmax-value}-#{$feature-value}: #{$breakpoint-value}) {
+        @content;
+    }
+}
+
+/// Umfasst den übergebenen Inhalt in eine **von-bis** Media Query. Es können Breakpoints aus einer hinterlegten Map ausgewählt oder eigene Werte übergeben werden.
+/// @param {String | Number} $breakpoint-from - Key oder Wert **ab wann** Stile greifen
+/// @param {String | Number} $breakpoint-to - Key oder Wert **bis wann** Stile greifen
+/// @param {String} $feature ["width"] - Soll eine width oder height Media Query erzeugt werden?
+/// @param {Map} $breakpoints [config.get("breakpoints")] - Map, auf die die ersten beiden Parameter zugreifen
+/// @example scss
+/// .element {
+///     @include adventure.breakpoint-between("medium", "xlarge") {
+///         text-align: center;
+///     }
+/// }
+@mixin breakpoint-between($breakpoint-from, $breakpoint-to, $feature: "width", $breakpoints: config.get("breakpoints")) {
+    $breakpoint-from-value: _convert-value($breakpoint-from, $breakpoints);
+    $breakpoint-to-value: _convert-value($breakpoint-to, $breakpoints);
+    $feature-value: _validate-feature($feature);
+
+    @if math.compatible($breakpoint-from-value, $breakpoint-to-value) {
+        @if ($breakpoint-from-value > $breakpoint-to-value) {
+            @error meta.inspect($breakpoint-from) + " is greater than " + meta.inspect($breakpoint-to) + ".";
+        }
+    }
+
+    $breakpoint-to-value: _prevent-collision($breakpoint-to-value);
+
+    @media screen and (min-#{$feature-value}: #{$breakpoint-from-value}) and (max-#{$feature-value}: #{$breakpoint-to-value}) {
+        @content;
+    }
+}
+
+/// Umfasst den übergebenen Inhalt in eine **Orientation** (Portrait/Landscape) Media Query.
+/// @param {String} $orientation - Ausrichtung des Ausgabemediums
+/// @example scss
+/// img {
+///     @include adventure.breakpoint-orientation("portrait") {
+///         aspect-ratio: 1 / 1;
+///     }
+///     @include adventure.breakpoint-orientation("landscape") {
+///         aspect-ratio: 16 / 9;
+///     }
+/// }
+@mixin breakpoint-orientation($orientation) {
+    $valid-orientations: "landscape", "portrait";
+
+    @if (list.index($valid-orientations, $orientation) == null) {
+        @warn meta.inspect($orientation) + " was passed to Media Query, which is not supported.";
+    }
+
+    @media screen and (orientation: #{$orientation}) {
+        @content;
+    }
+}
+
+/// Umfasst den übergebenen Inhalt in eine **min/max-aspect-ratio** Media Query.
+/// @param {Number} $ratio - Seitenverhältnis im Format **Breite/Höhe**
+/// @param {String} $minmax ["min"] - Soll eine min- oder max-aspect-ratio Media Query erzeugt werden?
+/// @example scss
+/// html {
+///     background-image: url("page-background.png");
+///     @include adventure.breakpoint-orientation(16/9) {
+///         background-image: url("page-background-16-9.png");
+///     }
+/// }
+@mixin breakpoint-aspect-ratio($ratio, $minmax: "min") {
+    @if (meta.type-of($ratio) != "number") {
+        @error meta.inspect($ratio) + " was passed to Media Query, which is not a number.";
+    }
+
+    @media screen and (#{$minmax}-aspect-ratio: #{$ratio}) {
+        @content;
+    }
+}
+
+/// Ermöglicht die Verwendung der Sass-Breakpoints im JavaScript. **In der Regel wird dieses Mixin bereits durch das global-styles Mixin eingebunden und muss nicht nochmals manuell aufgerufen werden.**
+/// @param {Map} $breakpoints [config.get("breakpoints")] - Map, dessen Breakpoints dem JavaScript zur Verfügung gestellt werden sollen
+/// @param {String} $pseudo-element ["after"] - Pseudoelement, das zur Übergabe verwendet werden soll
+/// @example scss
+/// html {
+///     @include adventure.provide-breakpoints-for-js();
+/// }
+@mixin provide-breakpoints-for-js($breakpoints: config.get("breakpoints"), $pseudo-element: "after") {
+    $str: "";
+
+    @each $key, $value in $breakpoints {
+        $str: $str + $key + ":" + units.em-calc($value, 16px) + ",";
+    }
+
+    $str: string.slice($str, 1, -2);
+
+    &::#{$pseudo-element} {
+        display: none;
+        content: $str;
+    }
+}
+
+/// Prüft, ob der Breakpoint einer Breakpoint-Map zugehörig ist.
+/// @param {String | Number} $breakpoint
+/// @param {Map} $breakpoints
+/// @return {Boolean}
+@function _is-named-breakpoint($breakpoint, $breakpoints) {
+    @return map.has-key($breakpoints, $breakpoint);
+}
+
+/// Validiert, dass nur Minmax-Werte verwendet werden, die sinnvoll sind.
+/// @param {String} $minmax
+/// @return {String}
+@function _validate-minmax($minmax) {
+    $valid-minmax: "min", "max";
+
+    @if (list.index($valid-minmax, $minmax) == null) {
+        @warn meta.inspect($minmax) + " was passed to Media Query, which is not supported.";
+        @return "min";
+    }
+    @return $minmax;
+}
+
+/// Validiert, dass nur Features verwendet werden, die sinnvoll sind.
+/// @param {String} $feature
+/// @return {String}
+@function _validate-feature($feature) {
+    $valid-features: "width", "height";
+
+    @if (list.index($valid-features, $feature) == null) {
+        @warn meta.inspect($feature) + " was passed to Media Query, which is not supported.";
+        @return "width";
+    }
+    @return $feature;
+}
+
+/// Wandelt den eingegebenen Breakpoint in einen verwendbaren Wert um.
+/// @param {String | Number} $breakpoint
+/// @param {Map} $breakpoints
+/// @return {Number}
+@function _convert-value($breakpoint, $breakpoints) {
+    $breakpoint-value: $breakpoint;
+
+    @if _is-named-breakpoint($breakpoint, $breakpoints) {
+        $value: map.get($breakpoints, $breakpoint);
+        $breakpoint-value: units.em-calc($value, 16px);
+    }
+
+    @if (meta.type-of($breakpoint-value) != "number") {
+        @error meta.inspect($breakpoint-value) + " was passed to Media Query, which is not a number.";
+    }
+
+    @if math.is-unitless($breakpoint-value) {
+        $breakpoint-value: units.em-calc($breakpoint-value, 16px);
+    }
+
+    @return $breakpoint-value;
+}
+
+/// Verhindert, dass ein Breakpoint zwei Bedingungen erfüllt.
+/// @link https://github.com/foundation/foundation-sites/blob/4d1bf0ab5eb1064d2aed4235647fc559a2a18dcc/scss/util/_breakpoint.scss#L113-L116
+/// @param {Number} $max-value
+/// @return {Number}
+@function _prevent-collision($max-value) {
+    @return $max-value - units.em-calc(0.2px, 16px);
+}

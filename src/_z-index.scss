@@ -1,0 +1,20 @@
+////
+/// @group 09-z-index
+////
+@use "sass:meta";
+@use "sass:list";
+@use "config";
+
+/// Gibt einen z-index aus der Konfiguration zurück.
+/// @param {String | Number} $key - Key, der $z-indices Liste oder eigener Wert
+/// @param {List} $z-indices [config.get("z-indices")] - Liste, auf die der erste Parameter zugreift
+/// @return {Number}
+@function z-index($key, $z-indices: config.get("z-indices")) {
+    @if (meta.type-of($key) == "number") {
+        @return $key;
+    }
+    @if (list.index($z-indices, $key) == null) {
+        @error "Key " + meta.inspect($key) + " was passed to z-index(), which was not found in given list.";
+    }
+    @return list.index($z-indices, $key);
+}

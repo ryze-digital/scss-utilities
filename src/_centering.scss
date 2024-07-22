@@ -1,0 +1,28 @@
+////
+/// @group 10-centering
+////
+
+/// Zentriert ein Element vertikal und horizontal.
+/// @param {String | Null} $position [absolute] - Wert für die CSS Eigenschaft position
+@mixin absolute-center($position: absolute) {
+    position: $position;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/// Zentriert ein Element vertikal.
+/// @param {String | Null} $position [absolute] - Wert für die CSS-Eigenschaft position
+@mixin vertical-center($position: absolute) {
+    position: $position;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/// Zentriert ein Element horizontal.
+/// @param {String | Null} $position [absolute] - Wert für die CSS-Eigenschaft position
+@mixin horizontal-center($position: absolute) {
+    position: $position;
+    left: 50%;
+    transform: translateX(-50%);
+}

@@ -1,0 +1,127 @@
+////
+/// @group 02-globals
+////
+
+@use "sass:math";
+@use "units";
+@use "config";
+@use "breakpoint";
+
+/// Fügt alle globalen Basis-Stile ein. **Alle Adventure-Komponenten gehen davon aus, dass diese Stile vorhanden sind.**
+/// @param {Boolean} $html [true]
+/// @param {Boolean} $img [true]
+/// @param {Boolean} $iframe [true]
+/// @param {Boolean} $ul [true]
+/// @param {Boolean} $button [true]
+/// @param {Boolean} $provide-breakpoints [true] - Breakpoints an JS übergeben
+/// @param {String} $provide-breakpoints-pseudo-element ["after"] - Pseudo-Element, das zur Übergabe der Breakpoints an JS verwendet wird
+@mixin global-styles(
+    $html: true,
+    $img: true,
+    $iframe: true,
+    $ul: true,
+    $button: true,
+    $provide-breakpoints: true,
+    $provide-breakpoints-pseudo-element: "after"
+) {
+    * {
+        margin: 0;
+        padding: 0;
+        outline: none;
+        box: {
+            sizing: inherit;
+        }
+        &::before,
+        &::after {
+            box: {
+                sizing: inherit;
+            }
+        }
+    }
+
+    @if ($html) {
+        @include global-html-styles($provide-breakpoints, $provide-breakpoints-pseudo-element);
+    }
+
+    @if ($img) {
+        @include global-img-styles();
+    }
+
+    @if ($iframe) {
+        @include global-iframe-styles();
+    }
+
+    @if ($ul) {
+        @include global-ul-styles();
+    }
+
+    @if ($button) {
+        @include global-button-styles();
+    }
+}
+
+/// Fügt HTML-Basis-Stile ein.
+/// @param {Boolean} $provide-breakpoints [true] - Breakpoints an JS übergeben
+/// @param {String} $provide-breakpoints-pseudo-element ["after"] - Pseudo-Element, das zur Übergabe der Breakpoints an JS verwendet wird
+@mixin global-html-styles($provide-breakpoints: true, $provide-breakpoints-pseudo-element: "after") {
+    html {
+        font: {
+            size: math.div(units.strip-unit(config.get("base-font-size")), 16) * 100%;
+        }
+        box: {
+            sizing: border-box;
+        }
+        scroll: {
+            behavior: smooth;
+        }
+        @if $provide-breakpoints {
+            @include breakpoint.provide-breakpoints-for-js($pseudo-element: $provide-breakpoints-pseudo-element);
+        }
+    }
+}
+
+/// Fügt Basis-Stile für Bilder ein.
+@mixin global-img-styles() {
+    img {
+        display: inline-block;
+        max: {
+            width: 100%;
+        }
+    }
+}
+
+/// Fügt Basis-Stile für iFrames ein.
+@mixin global-iframe-styles() {
+    iframe {
+        display: block;
+        border: none;
+    }
+}
+
+/// Fügt Basis-Stile für ungeordnete Listen ein.
+@mixin global-ul-styles() {
+    ul {
+        list: {
+            style: {
+                type: none;
+            }
+        }
+    }
+}
+
+/// Fügt Basis-Stile für Buttons ein.
+@mixin global-button-styles() {
+    button {
+        font: {
+            family: inherit;
+            size: inherit;
+        }
+        line: {
+            height: inherit;
+        }
+        border: {
+            radius: unset;
+        }
+        cursor: pointer;
+    }
+}

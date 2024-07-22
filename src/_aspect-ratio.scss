@@ -1,0 +1,42 @@
+////
+/// @group 08-aspect-ratio
+////
+@use "config";
+
+/// Dimensioniert einen Container im angegebenem Seitenverhältnis.
+/// @param {Number} $aspect-ratio [config.get("aspect-ratio")] - Seitenverhältnis im Format **Breite/Höhe**
+/// @param {Boolean} $stretch [false] - Soll der Inhalt des Containers auf die volle Höhe und Breite aufgestreckt werden?
+/// @example
+/// .container {
+///     @include adventure.aspect-ratio(math.div(4, 3), true);
+/// }
+@mixin aspect-ratio($aspect-ratio: config.get("aspect-ratio"), $stretch: false) {
+    &::before {
+        content: "";
+        display: block;
+        height: 0;
+        padding: {
+            bottom: calc(100% / #{$aspect-ratio});
+        }
+    }
+    @if $stretch {
+        position: relative;
+        > :first-child {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object: {
+                fit: cover;
+            }
+        }
+    } @else {
+        display: flow-root;
+        &::before {
+            float: left;
+        }
+    }
+}

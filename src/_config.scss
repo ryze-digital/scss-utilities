@@ -1,0 +1,40 @@
+////
+/// @group 01-config
+////
+
+@use "sass:map";
+@use "sass:math";
+
+/// Private Variable, die die Adventure Standard-Konfiguration beinhaltet.
+/// Zum Ändern der Konfiguration kann das **configure** Mixin verwendet werden.
+/// @access public
+/// @type Map
+$_config: (
+    "base-font-size": 16px,
+    "font-sizes": (
+        "default": 1rem
+    ),
+    "icon-font-family": "icomoon",
+    "color-palette": (),
+    "breakpoints": (
+        "small": 400px,
+        "medium": 700px,
+        "large": 1024px,
+        "xlarge": 1280px,
+        "xxlarge": 1440px
+    ),
+    "z-indices": (),
+    "aspect-ratio": math.div(16, 9)
+);
+
+/// Ermöglicht das Konfigurieren von Adventure.
+/// @param {Map} $config
+@mixin configure($config) {
+    $_config: map.deep-merge($_config, $config) !global;
+}
+
+/// Ermöglicht Zugriff auf Werte aus der internen Konfiguration.
+/// @param {String} $key
+@function get($key...) {
+    @return map.get($_config, $key...);
+}

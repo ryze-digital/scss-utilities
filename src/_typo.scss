@@ -1,0 +1,110 @@
+////
+/// @group 05-typo
+////
+@use "sass:map";
+@use "sass:meta";
+@use "sass:math";
+@use "sass:list";
+@use "config";
+@use "units";
+
+/// Gibt eine Schriftgröße aus der Konfiguration zurück.
+/// @param {String} $size - Key, der $sizes Map
+/// @param {Map} $sizes [config.get("font-sizes")] - Map, auf die der erste Parameter zugreift
+/// @return {Number}
+@function font-size($size, $sizes: config.get("font-sizes")) {
+    @if map.has-key($sizes, $size) {
+        $value: map.get($sizes, $size);
+
+        @if (meta.type-of($value) == "map") {
+            @if (map-has-key($value, "preferred") == false) {
+                @error "Please provide a preferred font-size for " + meta.inspect($size);
+            }
+
+            $preferred-font-size: _convert-unit(map-get($value, "preferred"));
+
+            @if (map-has-key($value, "min") == true and map-has-key($value, "max") == true) {
+                @return clamp(#{_convert-unit(map-get($value, "min"))}, #{$preferred-font-size}, #{_convert-unit(map-get($value, "max"))});
+            } @else if (map-has-key($value, "min") == true) {
+                @return max(#{$preferred-font-size}, #{_convert-unit(map-get($value, "min"))});
+            } @else if (map-has-key($value, "max") == true) {
+                @return min(#{$preferred-font-size}, #{_convert-unit(map-get($value, "max"))});
+            }
+
+            @return $preferred-font-size;
+        }
+
+        @return _convert-unit($value);
+    }
+
+    @error "A font-size named " + meta.inspect($size) + " could not be found in given map";
+}
+
+/// Stellt Text einzeilig dar und zeigt im Falle von Overflow Auslassungspunkte (…).
+/// @param {Number | Null} $max-width [null] - Wenn Auslassungspunkte dargestellt werden sollen, wird eine Breitenangabe benötigt
+@mixin single-line($max-width: null) {
+    overflow: hidden;
+    text: {
+        overflow: ellipsis;
+    }
+    white: {
+        space: nowrap;
+    }
+    max: {
+        width: $max-width;
+    }
+}
+
+/// Fügt dem Kind-Element öffnende und schließende Anführungszeichen hinzu.
+/// @param {String} $quotes [auto] - Value für das quotes Attribut
+@mixin quotes($quotes: auto) {
+    @include open-quote($quotes) {
+        @content;
+    }
+    @include close-quote($quotes) {
+        @content;
+    }
+}
+
+/// Fügt dem ersten Kind-Element öffnende Anführungszeichen hinzu.
+/// @param {String} $quotes [auto] - Value für das quotes Attribut
+@mixin open-quote($quotes: auto) {
+    quotes: $quotes;
+    > * {
+        &:first-child {
+            &::before {
+                content: open-quote;
+                @content;
+            }
+        }
+    }
+}
+
+/// Fügt dem letzten Kind-Element schließende Anführungszeichen hinzu.
+/// @param {String} $quotes [auto] - Value für das quotes Attribut
+@mixin close-quote($quotes: auto) {
+    quotes: $quotes;
+    > * {
+        &:last-child {
+            &::after {
+                content: close-quote;
+                @content;
+            }
+        }
+    }
+}
+
+/// Konvertiert kompatible Werte (px und unitless) in rem um. Lässt andere Werte, wie z.B. cm oder pt unberührt.
+/// @param {Number} $value
+/// @return {Number}
+@function _convert-unit($value) {
+    @if (meta.type-of($value) != "number") {
+        @error meta.inspect($value) + " was passed to font-size, which is not a number.";
+    }
+
+    @if (math.unit($value) == "px" or math.is-unitless($value)) {
+        @return units.rem-calc($value);
+    }
+
+    @return $value;
+}

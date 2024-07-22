@@ -1,0 +1,23 @@
+/// Create a Scrollable Table
+/// @param {String | Null} $min-width [null] - Minimum width for the table cell
+/// @param {Boolean} $overflow-scroll [true] - Enable momentum-based scrolling
+/// @example scss
+/// table {
+///     @include adventure.scrollable-table(22ch);
+/// }
+@mixin scrollable-table ($min-width: null, $overflow-scroll: true) {
+    display: block;
+    overflow: {
+        x: auto;
+        y: visible;
+    }
+    width: 100%;
+    @if ($overflow-scroll) {
+        -webkit-overflow-scrolling: touch;
+    }
+    td {
+        min: {
+            width: $min-width;
+        }
+    }
+}

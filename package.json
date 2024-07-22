@@ -1,0 +1,20 @@
+{
+  "name": "@ryze-digital/scss-utilities",
+  "description": "Contains several helpers and utilities for our Sass projects ",
+  "license": "UNLICENSED",
+  "version": "0.1.0",
+  "author": "RYZE Digital GmbH <kontakt@ryze-digital.de> (https://www.ryze-digital.de/)",
+  "scripts": {
+    "lint": "stylelint ./**/*.scss --syntax=scss"
+  },
+  "devDependencies": {
+    "@adventure/stylelint-config-adventure": "^1.0.0",
+    "stylelint": "^13.13.1"
+  },
+  "keywords": [
+    "sass",
+    "dartsass",
+    "scss",
+    "utilities"
+  ]
+}

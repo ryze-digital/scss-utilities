@@ -1,0 +1,3 @@
+{
+  "extends": "@adventure/stylelint-config-adventure"
+}

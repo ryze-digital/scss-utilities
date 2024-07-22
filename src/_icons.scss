@@ -1,0 +1,65 @@
+////
+/// @group 07-icons
+////
+@use "config";
+
+/// Erzeugt @font-face-Deklaration für Icon-Font.
+/// @example scss
+///  @include adventure.icon-font-face() {
+///     src: url("data:application/x-font-ttf;charset=utf-8;base64,AAEAAAALAIAAAwAw...") format("truetype");
+/// }
+@mixin icon-font-face() {
+    @font-face {
+        font: {
+            family: config.get("icon-font-family");
+            display: block;
+            style: normal;
+            weight: normal;
+        }
+        @content;
+    }
+}
+
+/// Fügt ein Icon hinzu.
+/// @param {String | Null} $name [null] - Name der Icon-Font-Variable
+/// @param {Boolean} $font-styles [true] - Sollen die für die Icon-Font benötigten Basis-Stile (wie z.B. font-family) eingebunden werden?
+/// @example scss
+/// .facebook {
+///     &::before {
+///         @include adventure.icon(icons.$facebook, false);
+///     }
+/// }
+@mixin icon($name: null, $font-styles: true) {
+    content: $name;
+    @if ($font-styles) {
+        @include icon-font();
+    }
+}
+
+/// Fügt Basis-Stile, die die Icon-Font benötigt hinzu. Das Mixin wird oftmals bereits über das **icon** Mixin eingebunden. Bitte achtet darauf, dass diese Stile nicht redundant eingebunden werden.
+/// @example scss
+/// .social-media-list {
+///     li {
+///         &::before {
+///             @include adventure.icon-font();
+///         }
+///     }
+/// }
+@mixin icon-font() {
+    font: {
+        /* stylelint-disable-next-line declaration-no-important */
+        family: config.get("icon-font-family") !important;
+        style: normal;
+        variant: normal;
+        weight: normal;
+    }
+    speak: none;
+    text: {
+        transform: none;
+    }
+    line: {
+        height: 1;
+    }
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}

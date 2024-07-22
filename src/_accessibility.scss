@@ -1,0 +1,22 @@
+////
+/// @group 11-accessibility
+////
+
+/// Blendet Element optisch aus, während es für z.B. Screenreader weiterhin sichtbar ist.
+/// @example
+/// .element {
+///     @include adventure.visually-hidden();
+/// }
+@mixin visually-hidden() {
+    clip: rect(0 0 0 0);
+    clip: {
+        path: inset(50%);
+    }
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white: {
+        space: nowrap;
+    }
+    width: 1px;
+}
