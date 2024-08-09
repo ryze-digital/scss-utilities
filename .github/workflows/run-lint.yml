@@ -1,0 +1,11 @@
+name: Run linter(s)
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  publish-npm:
+    uses: ryze-digital/reusable-workflows/.github/workflows/run-lint.yml@main
