@@ -2,7 +2,7 @@
   "name": "@ryze-digital/scss-utilities",
   "description": "Contains several helpers and utilities for our Sass projects ",
   "license": "UNLICENSED",
-  "version": "0.1.0",
+  "version": "1.0.0-beta.0",
   "author": "RYZE Digital GmbH <kontakt@ryze-digital.de> (https://www.ryze-digital.de/)",
   "type": "module",
   "scripts": {
