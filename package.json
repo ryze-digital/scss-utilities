@@ -4,17 +4,17 @@
   "license": "UNLICENSED",
   "version": "0.1.0",
   "author": "RYZE Digital GmbH <kontakt@ryze-digital.de> (https://www.ryze-digital.de/)",
+  "type": "module",
   "scripts": {
-    "lint": "stylelint ./**/*.scss --syntax=scss"
-  },
-  "devDependencies": {
-    "@adventure/stylelint-config-adventure": "^1.0.0",
-    "stylelint": "^13.13.1"
+    "lint": "stylelint ./**/*.scss"
   },
   "keywords": [
     "sass",
     "dartsass",
     "scss",
     "utilities"
-  ]
+  ],
+  "devDependencies": {
+    "@ryze-digital/stylelint-config-website": "github:ryze-digital/stylelint-config-website"
+  }
 }
