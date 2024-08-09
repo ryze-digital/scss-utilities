@@ -5,14 +5,14 @@
 /// table {
 ///     @include adventure.scrollable-table(22ch);
 /// }
-@mixin scrollable-table ($min-width: null, $overflow-scroll: true) {
+@mixin scrollable-table($min-width: null, $overflow-scroll: true) {
     display: block;
     overflow: {
         x: auto;
         y: visible;
     }
     width: 100%;
-    @if ($overflow-scroll) {
+    @if $overflow-scroll {
         -webkit-overflow-scrolling: touch;
     }
     td {

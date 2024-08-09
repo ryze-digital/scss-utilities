@@ -6,7 +6,8 @@
   "author": "RYZE Digital GmbH <kontakt@ryze-digital.de> (https://www.ryze-digital.de/)",
   "type": "module",
   "scripts": {
-    "lint": "stylelint ./**/*.scss"
+    "lint": "stylelint ./**/*.scss",
+    "lint-fix": "npm run lint -- --fix"
   },
   "keywords": [
     "sass",
@@ -15,6 +16,6 @@
     "utilities"
   ],
   "devDependencies": {
-    "@ryze-digital/stylelint-config-website": "github:ryze-digital/stylelint-config-website"
+    "@ryze-digital/stylelint-config-website": "^1.0.0-beta.0"
   }
 }

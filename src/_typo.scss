@@ -16,18 +16,18 @@
     @if map.has-key($sizes, $size) {
         $value: map.get($sizes, $size);
 
-        @if (meta.type-of($value) == "map") {
-            @if (map-has-key($value, "preferred") == false) {
+        @if meta.type-of($value) == "map" {
+            @if map-has-key($value, "preferred") == false {
                 @error "Please provide a preferred font-size for " + meta.inspect($size);
             }
 
             $preferred-font-size: _convert-unit(map-get($value, "preferred"));
 
-            @if (map-has-key($value, "min") == true and map-has-key($value, "max") == true) {
+            @if map-has-key($value, "min") == true and map-has-key($value, "max") == true {
                 @return clamp(#{_convert-unit(map-get($value, "min"))}, #{$preferred-font-size}, #{_convert-unit(map-get($value, "max"))});
-            } @else if (map-has-key($value, "min") == true) {
+            } @else if map-has-key($value, "min") == true {
                 @return max(#{$preferred-font-size}, #{_convert-unit(map-get($value, "min"))});
-            } @else if (map-has-key($value, "max") == true) {
+            } @else if map-has-key($value, "max") == true {
                 @return min(#{$preferred-font-size}, #{_convert-unit(map-get($value, "max"))});
             }
 
@@ -98,11 +98,11 @@
 /// @param {Number} $value
 /// @return {Number}
 @function _convert-unit($value) {
-    @if (meta.type-of($value) != "number") {
+    @if meta.type-of($value) != "number" {
         @error meta.inspect($value) + " was passed to font-size, which is not a number.";
     }
 
-    @if (math.unit($value) == "px" or math.is-unitless($value)) {
+    @if math.unit($value) == "px" or math.is-unitless($value) {
         @return units.rem-calc($value);
     }
 

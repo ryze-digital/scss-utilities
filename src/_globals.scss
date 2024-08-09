@@ -39,23 +39,23 @@
         }
     }
 
-    @if ($html) {
+    @if $html {
         @include global-html-styles($provide-breakpoints, $provide-breakpoints-pseudo-element);
     }
 
-    @if ($img) {
+    @if $img {
         @include global-img-styles();
     }
 
-    @if ($iframe) {
+    @if $iframe {
         @include global-iframe-styles();
     }
 
-    @if ($ul) {
+    @if $ul {
         @include global-ul-styles();
     }
 
-    @if ($button) {
+    @if $button {
         @include global-button-styles();
     }
 }

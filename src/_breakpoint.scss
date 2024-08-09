@@ -39,7 +39,7 @@
     $minmax-value: _validate-minmax($minmax);
     $feature-value: _validate-feature($feature);
 
-    @if (_is-named-breakpoint($breakpoint, $breakpoints) and $minmax-value == "max") {
+    @if _is-named-breakpoint($breakpoint, $breakpoints) and $minmax-value == "max" {
         $breakpoint-value: _prevent-collision($breakpoint-value);
     }
 
@@ -65,7 +65,7 @@
     $feature-value: _validate-feature($feature);
 
     @if math.compatible($breakpoint-from-value, $breakpoint-to-value) {
-        @if ($breakpoint-from-value > $breakpoint-to-value) {
+        @if $breakpoint-from-value > $breakpoint-to-value {
             @error meta.inspect($breakpoint-from) + " is greater than " + meta.inspect($breakpoint-to) + ".";
         }
     }
@@ -91,7 +91,7 @@
 @mixin breakpoint-orientation($orientation) {
     $valid-orientations: "landscape", "portrait";
 
-    @if (list.index($valid-orientations, $orientation) == null) {
+    @if list.index($valid-orientations, $orientation) == null {
         @warn meta.inspect($orientation) + " was passed to Media Query, which is not supported.";
     }
 
@@ -111,7 +111,7 @@
 ///     }
 /// }
 @mixin breakpoint-aspect-ratio($ratio, $minmax: "min") {
-    @if (meta.type-of($ratio) != "number") {
+    @if meta.type-of($ratio) != "number" {
         @error meta.inspect($ratio) + " was passed to Media Query, which is not a number.";
     }
 
@@ -156,7 +156,7 @@
 @function _validate-minmax($minmax) {
     $valid-minmax: "min", "max";
 
-    @if (list.index($valid-minmax, $minmax) == null) {
+    @if list.index($valid-minmax, $minmax) == null {
         @warn meta.inspect($minmax) + " was passed to Media Query, which is not supported.";
         @return "min";
     }
@@ -169,7 +169,7 @@
 @function _validate-feature($feature) {
     $valid-features: "width", "height";
 
-    @if (list.index($valid-features, $feature) == null) {
+    @if list.index($valid-features, $feature) == null {
         @warn meta.inspect($feature) + " was passed to Media Query, which is not supported.";
         @return "width";
     }
@@ -188,7 +188,7 @@
         $breakpoint-value: units.em-calc($value, 16px);
     }
 
-    @if (meta.type-of($breakpoint-value) != "number") {
+    @if meta.type-of($breakpoint-value) != "number" {
         @error meta.inspect($breakpoint-value) + " was passed to Media Query, which is not a number.";
     }
 

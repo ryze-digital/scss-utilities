@@ -30,14 +30,14 @@
 ///         shadow: 0 0 5px 0 hsl(var(--red-hsl) / 20%);
 ///     }
 /// }
-@function hex2hsl ($hex-value) {
+@function hex2hsl($hex-value) {
     @return color.hue($hex-value) color.saturation($hex-value) color.lightness($hex-value);
 }
 
 /// Erzeugt Custom Properties für eine Farbe.
 /// @param {String} $custom-property-name
 /// @param {Color} $color
-@mixin provide-custom-properties-for-color ($custom-property-name, $color) {
+@mixin provide-custom-properties-for-color($custom-property-name, $color) {
     --#{$custom-property-name}: #{$color};
     --#{$custom-property-name}-h: #{color.hue($color)};
     --#{$custom-property-name}-s: #{color.saturation($color)};
@@ -51,7 +51,7 @@
 /// :root {
 ///     @include adventure.provide-custom-properties-for-color-palette();
 /// }
-@mixin provide-custom-properties-for-color-palette ($palette: config.get("color-palette")) {
+@mixin provide-custom-properties-for-color-palette($palette: config.get("color-palette")) {
     @each $color-name, $color-value in $palette {
         @include provide-custom-properties-for-color($color-name, $color-value);
     }

@@ -31,7 +31,7 @@
 /// }
 @mixin icon($name: null, $font-styles: true) {
     content: $name;
-    @if ($font-styles) {
+    @if $font-styles {
         @include icon-font();
     }
 }

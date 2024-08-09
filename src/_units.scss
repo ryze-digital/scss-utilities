@@ -16,22 +16,22 @@
 /// @param {Number} $base-font-size [config.get("base-font-size")] - Schriftgröße zur Berechnung des rem-Wertes
 /// @return {Number} in rem
 @function rem-calc($value, $base-font-size: config.get("base-font-size")) {
-    @if (meta.type-of($value) != "number") {
+    @if meta.type-of($value) != "number" {
         @warn meta.inspect($value) + " was passed to rem-calc(), which is not a number.";
         @return $value;
     }
 
-    @if (meta.type-of($base-font-size) != "number") {
+    @if meta.type-of($base-font-size) != "number" {
         @warn meta.inspect($base-font-size) + " was passed to rem-calc(), which is not a number.";
         @return $value;
     }
 
-    @if (math.unit($value) != "" and math.unit($value) != "px") {
+    @if math.unit($value) != "" and math.unit($value) != "px" {
         @warn meta.inspect($value) + " was passed to rem-calc(), which is not a pixel value.";
         @return $value;
     }
 
-    @if (math.unit($base-font-size) != "" and math.unit($base-font-size) != "px") {
+    @if math.unit($base-font-size) != "" and math.unit($base-font-size) != "px" {
         @warn meta.inspect($base-font-size) + " was passed to rem-calc(), which is not a pixel value.";
         @return $value;
     }
@@ -57,12 +57,12 @@
 /// @param {Number} $number
 /// @return {Number} ohne Einheit
 @function strip-unit($number) {
-    @if (meta.type-of($number) != "number") {
+    @if meta.type-of($number) != "number" {
         @warn meta.inspect($number) + " was passed to strip-unit(), which is not a number.";
         @return $number;
     }
 
-    @if (math.is-unitless($number)) {
+    @if math.is-unitless($number) {
         @return $number;
     }
 
