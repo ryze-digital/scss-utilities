@@ -1,5 +1,7 @@
 # RYZE Digital Scss Utilities
 
+![Run linter(s) workflow status](https://github.com/ryze-digital/scss-utilities/actions/workflows/run-lint.yml/badge.svg)
+
 ## Install
 
 ```sh
