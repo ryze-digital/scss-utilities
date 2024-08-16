@@ -5,6 +5,7 @@
   "version": "1.0.0-beta.0",
   "author": "RYZE Digital GmbH <kontakt@ryze-digital.de> (https://www.ryze-digital.de/)",
   "type": "module",
+  "repository": "github:ryze-digital/scss-utilities",
   "scripts": {
     "lint": "stylelint ./**/*.scss",
     "lint-fix": "npm run lint -- --fix"
