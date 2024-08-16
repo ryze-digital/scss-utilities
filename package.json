@@ -17,6 +17,6 @@
     "utilities"
   ],
   "devDependencies": {
-    "@ryze-digital/stylelint-config-website": "^1.0.0-beta.0"
+    "@ryze-digital/stylelint-config-website": "^1.0.0-beta.1"
   }
 }
