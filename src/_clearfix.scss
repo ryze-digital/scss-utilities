@@ -6,14 +6,14 @@
 @mixin clearfix() {
     display: flow-root;
     @supports not (display: flow-root) {
-        @include _legacy-clearfix();
+        @include -legacy-clearfix();
         display: block;
     }
 }
 
 /// Hebt den Float im Container auf.
 /// @deprecated
-@mixin _legacy-clearfix() {
+@mixin -legacy-clearfix() {
     &::after {
         content: "";
         display: table;

@@ -17,24 +17,24 @@
         $value: map.get($sizes, $size);
 
         @if meta.type-of($value) == "map" {
-            @if map-has-key($value, "preferred") == false {
+            @if map.has-key($value, "preferred") == false {
                 @error "Please provide a preferred font-size for " + meta.inspect($size);
             }
 
-            $preferred-font-size: _convert-unit(map-get($value, "preferred"));
+            $preferred-font-size: -convert-unit(map.get($value, "preferred"));
 
-            @if map-has-key($value, "min") == true and map-has-key($value, "max") == true {
-                @return clamp(#{_convert-unit(map-get($value, "min"))}, #{$preferred-font-size}, #{_convert-unit(map-get($value, "max"))});
-            } @else if map-has-key($value, "min") == true {
-                @return max(#{$preferred-font-size}, #{_convert-unit(map-get($value, "min"))});
-            } @else if map-has-key($value, "max") == true {
-                @return min(#{$preferred-font-size}, #{_convert-unit(map-get($value, "max"))});
+            @if map.has-key($value, "min") == true and map.has-key($value, "max") == true {
+                @return clamp(#{-convert-unit(map.get($value, "min"))}, #{$preferred-font-size}, #{-convert-unit(map.get($value, "max"))});
+            } @else if map.has-key($value, "min") == true {
+                @return max(#{$preferred-font-size}, #{-convert-unit(map.get($value, "min"))});
+            } @else if map.has-key($value, "max") == true {
+                @return min(#{$preferred-font-size}, #{-convert-unit(map.get($value, "max"))});
             }
 
             @return $preferred-font-size;
         }
 
-        @return _convert-unit($value);
+        @return -convert-unit($value);
     }
 
     @error "A font-size named " + meta.inspect($size) + " could not be found in given map";
@@ -97,7 +97,7 @@
 /// Konvertiert kompatible Werte (px und unitless) in rem um. Lässt andere Werte, wie z.B. cm oder pt unberührt.
 /// @param {Number} $value
 /// @return {Number}
-@function _convert-unit($value) {
+@function -convert-unit($value) {
     @if meta.type-of($value) != "number" {
         @error meta.inspect($value) + " was passed to font-size, which is not a number.";
     }

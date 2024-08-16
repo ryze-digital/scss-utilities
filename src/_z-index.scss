@@ -13,7 +13,7 @@
     @if meta.type-of($key) == "number" {
         @return $key;
     }
-    @if list.index($z-indices, $key) == null {
+    @if not list.index($z-indices, $key) {
         @error "Key " + meta.inspect($key) + " was passed to z-index(), which was not found in given list.";
     }
     @return list.index($z-indices, $key);

@@ -9,7 +9,7 @@
 /// Zum Ändern der Konfiguration kann das **configure** Mixin verwendet werden.
 /// @access public
 /// @type Map
-$_config: (
+$-config: (
     "base-font-size": 16px,
     "font-sizes": (
         "default": 1rem
@@ -30,11 +30,11 @@ $_config: (
 /// Ermöglicht das Konfigurieren von Adventure.
 /// @param {Map} $config
 @mixin configure($config) {
-    $_config: map.deep-merge($_config, $config) !global;
+    $-config: map.deep-merge($-config, $config) !global;
 }
 
 /// Ermöglicht Zugriff auf Werte aus der internen Konfiguration.
 /// @param {String} $key
 @function get($key...) {
-    @return map.get($_config, $key...);
+    @return map.get($-config, $key...);
 }
