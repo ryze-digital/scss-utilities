@@ -8,7 +8,7 @@
   "repository": "github:ryze-digital/scss-utilities",
   "scripts": {
     "lint": "stylelint ./**/*.scss",
-    "lint-fix": "npm run lint -- --fix"
+    "lint-fix": "npm run lint -- --fix && prettier src/** --write"
   },
   "keywords": [
     "sass",
@@ -17,6 +17,7 @@
     "utilities"
   ],
   "devDependencies": {
+    "@ryze-digital/prettier-config-website": "^1.0.0",
     "@ryze-digital/stylelint-config-website": "^1.0.0"
   }
 }

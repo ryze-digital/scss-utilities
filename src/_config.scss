@@ -12,7 +12,7 @@
 $-config: (
     "base-font-size": 16px,
     "font-sizes": (
-        "default": 1rem
+        "default": 1rem,
     ),
     "icon-font-family": "icomoon",
     "color-palette": (),
@@ -21,10 +21,10 @@ $-config: (
         "medium": 700px,
         "large": 1024px,
         "xlarge": 1280px,
-        "xxlarge": 1440px
+        "xxlarge": 1440px,
     ),
     "z-indices": (),
-    "aspect-ratio": math.div(16, 9)
+    "aspect-ratio": math.div(16, 9),
 );
 
 /// Ermöglicht das Konfigurieren von Adventure.
