@@ -30,7 +30,7 @@
 ///     }
 /// }
 @mixin icon($name: null, $font-styles: true) {
-    content: $name;
+    content: $name / "";
     @if $font-styles {
         @include icon-font();
     }
