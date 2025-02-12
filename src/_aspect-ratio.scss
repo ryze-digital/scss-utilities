@@ -10,10 +10,7 @@
 /// .container {
 ///     @include adventure.aspect-ratio(math.div(4, 3), true);
 /// }
-@mixin aspect-ratio(
-    $aspect-ratio: config.get("aspect-ratio"),
-    $stretch: false
-) {
+@mixin aspect-ratio($aspect-ratio: config.get("aspect-ratio"), $stretch: false) {
     &::before {
         content: "";
         display: block;

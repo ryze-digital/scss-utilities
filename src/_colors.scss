@@ -31,8 +31,7 @@
 ///     }
 /// }
 @function hex2hsl($hex-value) {
-    @return color.hue($hex-value) color.saturation($hex-value)
-        color.lightness($hex-value);
+    @return color.hue($hex-value) color.saturation($hex-value) color.lightness($hex-value);
 }
 
 /// Erzeugt Custom Properties für eine Farbe.
@@ -43,8 +42,7 @@
     --#{$custom-property-name}-h: #{color.hue($color)};
     --#{$custom-property-name}-s: #{color.saturation($color)};
     --#{$custom-property-name}-l: #{color.lightness($color)};
-    --#{$custom-property-name}-hsl: var(--#{$custom-property-name}-h)
-        var(--#{$custom-property-name}-s) var(--#{$custom-property-name}-l);
+    --#{$custom-property-name}-hsl: var(--#{$custom-property-name}-h) var(--#{$custom-property-name}-s) var(--#{$custom-property-name}-l);
 }
 
 /// Erzeugt Custom Properties für eine ganze Farbpalette.
@@ -53,9 +51,7 @@
 /// :root {
 ///     @include adventure.provide-custom-properties-for-color-palette();
 /// }
-@mixin provide-custom-properties-for-color-palette(
-    $palette: config.get("color-palette")
-) {
+@mixin provide-custom-properties-for-color-palette($palette: config.get("color-palette")) {
     @each $color-name, $color-value in $palette {
         @include provide-custom-properties-for-color($color-name, $color-value);
     }

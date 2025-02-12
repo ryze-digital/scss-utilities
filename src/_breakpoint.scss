@@ -34,20 +34,12 @@
 ///         display: block;
 ///     }
 /// }
-@mixin breakpoint(
-    $breakpoint,
-    $minmax: "min",
-    $feature: "width",
-    $breakpoints: config.get("breakpoints")
-) {
+@mixin breakpoint($breakpoint, $minmax: "min", $feature: "width", $breakpoints: config.get("breakpoints")) {
     $breakpoint-value: -convert-value($breakpoint, $breakpoints);
     $minmax-value: -validate-minmax($minmax);
     $feature-value: -validate-feature($feature);
 
-    @if -is-named-breakpoint($breakpoint, $breakpoints) and
-        $minmax-value ==
-        "max"
-    {
+    @if -is-named-breakpoint($breakpoint, $breakpoints) and $minmax-value == "max" {
         $breakpoint-value: -prevent-collision($breakpoint-value);
     }
 
@@ -67,12 +59,7 @@
 ///         text-align: center;
 ///     }
 /// }
-@mixin breakpoint-between(
-    $breakpoint-from,
-    $breakpoint-to,
-    $feature: "width",
-    $breakpoints: config.get("breakpoints")
-) {
+@mixin breakpoint-between($breakpoint-from, $breakpoint-to, $feature: "width", $breakpoints: config.get("breakpoints")) {
     $breakpoint-from-value: -convert-value($breakpoint-from, $breakpoints);
     $breakpoint-to-value: -convert-value($breakpoint-to, $breakpoints);
     $feature-value: -validate-feature($feature);
@@ -140,10 +127,7 @@
 /// html {
 ///     @include adventure.provide-breakpoints-for-js();
 /// }
-@mixin provide-breakpoints-for-js(
-    $breakpoints: config.get("breakpoints"),
-    $pseudo-element: "after"
-) {
+@mixin provide-breakpoints-for-js($breakpoints: config.get("breakpoints"), $pseudo-element: "after") {
     $str: "";
 
     @each $key, $value in $breakpoints {

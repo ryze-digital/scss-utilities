@@ -15,15 +15,7 @@
 /// @param {Boolean} $button [true]
 /// @param {Boolean} $provide-breakpoints [true] - Breakpoints an JS übergeben
 /// @param {String} $provide-breakpoints-pseudo-element ["after"] - Pseudo-Element, das zur Übergabe der Breakpoints an JS verwendet wird
-@mixin global-styles(
-    $html: true,
-    $img: true,
-    $iframe: true,
-    $ul: true,
-    $button: true,
-    $provide-breakpoints: true,
-    $provide-breakpoints-pseudo-element: "after"
-) {
+@mixin global-styles($html: true, $img: true, $iframe: true, $ul: true, $button: true, $provide-breakpoints: true, $provide-breakpoints-pseudo-element: "after") {
     * {
         margin: 0;
         padding: 0;
@@ -40,10 +32,7 @@
     }
 
     @if $html {
-        @include global-html-styles(
-            $provide-breakpoints,
-            $provide-breakpoints-pseudo-element
-        );
+        @include global-html-styles($provide-breakpoints, $provide-breakpoints-pseudo-element);
     }
 
     @if $img {
@@ -66,14 +55,10 @@
 /// Fügt HTML-Basis-Stile ein.
 /// @param {Boolean} $provide-breakpoints [true] - Breakpoints an JS übergeben
 /// @param {String} $provide-breakpoints-pseudo-element ["after"] - Pseudo-Element, das zur Übergabe der Breakpoints an JS verwendet wird
-@mixin global-html-styles(
-    $provide-breakpoints: true,
-    $provide-breakpoints-pseudo-element: "after"
-) {
+@mixin global-html-styles($provide-breakpoints: true, $provide-breakpoints-pseudo-element: "after") {
     html {
         font: {
-            size: math.div(units.strip-unit(config.get("base-font-size")), 16) *
-                100%;
+            size: math.div(units.strip-unit(config.get("base-font-size")), 16) * 100%;
         }
         box: {
             sizing: border-box;
@@ -82,9 +67,7 @@
             behavior: smooth;
         }
         @if $provide-breakpoints {
-            @include breakpoint.provide-breakpoints-for-js(
-                $pseudo-element: $provide-breakpoints-pseudo-element
-            );
+            @include breakpoint.provide-breakpoints-for-js($pseudo-element: $provide-breakpoints-pseudo-element);
         }
     }
 }

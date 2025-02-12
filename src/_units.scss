@@ -31,8 +31,7 @@
         @return $value;
     }
 
-    @if math.unit($base-font-size) != "" and math.unit($base-font-size) != "px"
-    {
+    @if math.unit($base-font-size) != "" and math.unit($base-font-size) != "px" {
         @warn meta.inspect($base-font-size) + " was passed to rem-calc(), which is not a pixel value.";
         @return $value;
     }

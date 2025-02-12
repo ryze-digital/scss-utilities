@@ -23,26 +23,12 @@
 
             $preferred-font-size: -convert-unit(map.get($value, "preferred"));
 
-            @if map.has-key($value, "min") ==
-                true and
-                map.has-key($value, "max") ==
-                true
-            {
-                @return clamp(
-                    #{-convert-unit(map.get($value, "min"))},
-                    #{$preferred-font-size},
-                    #{-convert-unit(map.get($value, "max"))}
-                );
+            @if map.has-key($value, "min") == true and map.has-key($value, "max") == true {
+                @return clamp(#{-convert-unit(map.get($value, "min"))}, #{$preferred-font-size}, #{-convert-unit(map.get($value, "max"))});
             } @else if map.has-key($value, "min") == true {
-                @return max(
-                    #{$preferred-font-size},
-                    #{-convert-unit(map.get($value, "min"))}
-                );
+                @return max(#{$preferred-font-size}, #{-convert-unit(map.get($value, "min"))});
             } @else if map.has-key($value, "max") == true {
-                @return min(
-                    #{$preferred-font-size},
-                    #{-convert-unit(map.get($value, "max"))}
-                );
+                @return min(#{$preferred-font-size}, #{-convert-unit(map.get($value, "max"))});
             }
 
             @return $preferred-font-size;
