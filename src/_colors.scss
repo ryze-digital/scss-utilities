@@ -31,7 +31,7 @@
 ///     }
 /// }
 @function hex2hsl($hex-value) {
-    @return color.hue($hex-value) color.saturation($hex-value) color.lightness($hex-value);
+    @return color.channel($hex-value, "hue", $space: hsl) color.channel($hex-value, "saturation", $space: hsl) color.channel($hex-value, "lightness", $space: hsl);
 }
 
 /// Erzeugt Custom Properties für eine Farbe.
@@ -39,9 +39,9 @@
 /// @param {Color} $color
 @mixin provide-custom-properties-for-color($custom-property-name, $color) {
     --#{$custom-property-name}: #{$color};
-    --#{$custom-property-name}-h: #{color.hue($color)};
-    --#{$custom-property-name}-s: #{color.saturation($color)};
-    --#{$custom-property-name}-l: #{color.lightness($color)};
+    --#{$custom-property-name}-h: #{color.channel($color, "hue", $space: hsl)};
+    --#{$custom-property-name}-s: #{color.channel($color, "saturation", $space: hsl)};
+    --#{$custom-property-name}-l: #{color.channel($color, "lightness", $space: hsl)};
     --#{$custom-property-name}-hsl: var(--#{$custom-property-name}-h) var(--#{$custom-property-name}-s) var(--#{$custom-property-name}-l);
 }
 
