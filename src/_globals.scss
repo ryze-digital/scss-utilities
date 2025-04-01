@@ -15,7 +15,16 @@
 /// @param {Boolean} $button [true]
 /// @param {Boolean} $provide-breakpoints [true] - Breakpoints an JS übergeben
 /// @param {String} $provide-breakpoints-pseudo-element ["after"] - Pseudo-Element, das zur Übergabe der Breakpoints an JS verwendet wird
-@mixin global-styles($html: true, $img: true, $iframe: true, $ul: true, $button: true, $provide-breakpoints: true, $provide-breakpoints-pseudo-element: "after") {
+@mixin global-styles(
+    $html: true,
+    $img: true,
+    $iframe: true,
+    $ul: true,
+    $button: true,
+    $provide-breakpoints: true,
+    $provide-breakpoints-pseudo-element: "after",
+    $reduce-motion: true
+) {
     * {
         margin: 0;
         padding: 0;
@@ -49,6 +58,10 @@
 
     @if $button {
         @include global-button-styles();
+    }
+
+    @if $reduce-motion {
+        @include reduce-motion();
     }
 }
 
@@ -115,5 +128,25 @@
             radius: unset;
         }
         cursor: pointer;
+    }
+}
+
+/// Unterbindet Animationen, wenn Nutzer prefers-reduced-motion auf reduce gestellt haben
+@mixin reduce-motion() {
+    @media (prefers-reduced-motion: reduce) {
+        /* stylelint-disable declaration-no-important */
+        * {
+            animation: {
+                duration: 0.01ms !important;
+                iteration-count: 1 !important;
+            }
+            transition: {
+                duration: 0.01ms !important;
+            }
+            scroll: {
+                behavior: auto !important;
+            }
+        }
+        /* stylelint-enable declaration-no-important */
     }
 }
