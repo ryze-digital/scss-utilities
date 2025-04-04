@@ -5,7 +5,7 @@
 ## Install
 
 ```sh
-npm i @ryze-digital/scss-utilities
+npm i @ryze-digital/scss-utilities --save
 ```
 
 ## Usage
