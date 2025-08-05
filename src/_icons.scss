@@ -30,9 +30,15 @@
 ///     }
 /// }
 @mixin icon($name: null, $font-styles: true) {
-    content: $name / "";
+    --icon: "#{$name}";
     @if $font-styles {
         @include icon-font();
+    }
+    @supports (content: $name / "") {
+        --icon: "#{$name}" / "";
+    }
+    & {
+        content: var(--icon);
     }
 }
 
