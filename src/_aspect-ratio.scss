@@ -11,6 +11,7 @@
 ///     @include adventure.aspect-ratio(math.div(4, 3), true);
 /// }
 @mixin aspect-ratio($aspect-ratio: config.get("aspect-ratio"), $stretch: false) {
+    @warn "The aspect-ratio() mixin is deprecated. Use the native aspect-ratio property instead.";
     &::before {
         content: "";
         display: block;
