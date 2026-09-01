@@ -16,6 +16,7 @@
 /// @param {Boolean} $provide-breakpoints [true] - Breakpoints an JS übergeben
 /// @param {String} $provide-breakpoints-pseudo-element ["after"] - Pseudo-Element, das zur Übergabe der Breakpoints an JS verwendet wird
 @mixin global-styles(
+    $universal: true,
     $html: true,
     $img: true,
     $iframe: true,
@@ -25,19 +26,8 @@
     $provide-breakpoints-pseudo-element: "after",
     $reduce-motion: true
 ) {
-    * {
-        margin: 0;
-        padding: 0;
-        outline: none;
-        box: {
-            sizing: inherit;
-        }
-        &::before,
-        &::after {
-            box: {
-                sizing: inherit;
-            }
-        }
+    @if $universal {
+        @include global-universal-styles();
     }
 
     @if $html {
@@ -62,6 +52,24 @@
 
     @if $reduce-motion {
         @include reduce-motion();
+    }
+}
+
+/// Fügt Basis-Stile für alle Elemente ein.
+@mixin global-universal-styles() {
+    * {
+        margin: 0;
+        padding: 0;
+        outline: none;
+        box: {
+            sizing: inherit;
+        }
+        &::before,
+        &::after {
+            box: {
+                sizing: inherit;
+            }
+        }
     }
 }
 
