@@ -5,8 +5,8 @@
 @use "sass:map";
 @use "sass:math";
 
-/// Private Variable, die die Adventure Standard-Konfiguration beinhaltet.
-/// Zum Ändern der Konfiguration kann das **configure** Mixin verwendet werden.
+/// Private variable holding the default scss-utilities configuration.
+/// The **configure** mixin can be used to change the configuration.
 /// @access public
 /// @type Map
 $-config: (
@@ -27,13 +27,13 @@ $-config: (
     "aspect-ratio": math.div(16, 9),
 );
 
-/// Ermöglicht das Konfigurieren von Adventure.
+/// Allows configuring scss-utilities.
 /// @param {Map} $config
 @mixin configure($config) {
     $-config: map.deep-merge($-config, $config) !global;
 }
 
-/// Ermöglicht Zugriff auf Werte aus der internen Konfiguration.
+/// Allows access to values from the internal configuration.
 /// @param {String} $key
 @function get($key...) {
     @return map.get($-config, $key...);

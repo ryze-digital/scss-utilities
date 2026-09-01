@@ -6,9 +6,9 @@
 @use "sass:color";
 @use "config";
 
-/// Gibt eine Farbe aus der Konfiguration zurück.
-/// @param {String} $name - Key, der $palette Map
-/// @param {Map} $palette [config.get("color-palette")] - Map, auf die der erste Parameter zugreift
+/// Returns a color from the configuration.
+/// @param {String} $name - Key of the $palette map
+/// @param {Map} $palette [config.get("color-palette")] - Map that the first parameter accesses
 /// @return {Color}
 @function color($name, $palette: config.get("color-palette")) {
     @if map.has-key($palette, $name) {
@@ -17,12 +17,12 @@
     @error "A color named " + meta.inspect($name) + " could not be found in given palette";
 }
 
-/// Konvertiert eine Farbe von Hexadezimal zu HSL.
+/// Converts a color from hexadecimal to HSL.
 /// @param {Color} $hex-value
 /// @return {Color}
 /// @example scss
 /// .error {
-///     --red-hsl: #{adventure.hex2hsl(#ff0000)};
+///     --red-hsl: #{scss-utilities.hex2hsl(#ff0000)};
 ///     background: {
 ///         color: hsl(var(--red-hsl));
 ///     }
@@ -34,7 +34,7 @@
     @return color.channel($hex-value, "hue", $space: hsl) color.channel($hex-value, "saturation", $space: hsl) color.channel($hex-value, "lightness", $space: hsl);
 }
 
-/// Erzeugt Custom Properties für eine Farbe.
+/// Generates custom properties for a color.
 /// @param {String} $custom-property-name
 /// @param {Color} $color
 @mixin provide-custom-properties-for-color($custom-property-name, $color) {
@@ -45,11 +45,11 @@
     --#{$custom-property-name}-hsl: var(--#{$custom-property-name}-h) var(--#{$custom-property-name}-s) var(--#{$custom-property-name}-l);
 }
 
-/// Erzeugt Custom Properties für eine ganze Farbpalette.
+/// Generates custom properties for an entire color palette.
 /// @param {Map} $palette [config.get("color-palette")]
 /// @example scss
 /// :root {
-///     @include adventure.provide-custom-properties-for-color-palette();
+///     @include scss-utilities.provide-custom-properties-for-color-palette();
 /// }
 @mixin provide-custom-properties-for-color-palette($palette: config.get("color-palette")) {
     @each $color-name, $color-value in $palette {

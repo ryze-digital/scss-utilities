@@ -1,9 +1,13 @@
-/// Create a Scrollable Table
+////
+/// @group 12-tables
+////
+
+/// Creates a scrollable table.
 /// @param {String | Null} $min-width [null] - Minimum width for the table cell
 /// @param {Boolean} $overflow-scroll [true] - Enable momentum-based scrolling
 /// @example scss
 /// table {
-///     @include adventure.scrollable-table(22ch);
+///     @include scss-utilities.scrollable-table(22ch);
 /// }
 @mixin scrollable-table($min-width: null, $overflow-scroll: true) {
     display: block;

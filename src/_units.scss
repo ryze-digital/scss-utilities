@@ -6,15 +6,15 @@
 @use "sass:meta";
 @use "config";
 
-/// Rechnet Pixel-Wert in entsprechenden rem-Wert um.
+/// Converts a pixel value into the corresponding rem value.
+/// @param {Number} $value - Pixel value
+/// @param {Number} $base-font-size [config.get("base-font-size")] - Font size used to calculate the rem value
+/// @return {Number} in rem
 /// @example scss
 /// button {
-///     padding-right: adventure.rem-calc(20px);
-///     padding-left: adventure.rem-calc(20px);
+///     padding-right: scss-utilities.rem-calc(20px);
+///     padding-left: scss-utilities.rem-calc(20px);
 /// }
-/// @param {Number} $value - Pixel-Wert
-/// @param {Number} $base-font-size [config.get("base-font-size")] - Schriftgröße zur Berechnung des rem-Wertes
-/// @return {Number} in rem
 @function rem-calc($value, $base-font-size: config.get("base-font-size")) {
     @if meta.type-of($value) != "number" {
         @warn meta.inspect($value) + " was passed to rem-calc(), which is not a number.";
@@ -39,23 +39,23 @@
     @return math.div(strip-unit($value), strip-unit($base-font-size)) * 1rem;
 }
 
-/// Rechnet Pixel-Wert in entsprechenden em-Wert um.
+/// Converts a pixel value into the corresponding em value.
+/// @param {Number} $value - Pixel value
+/// @param {Number} $current-font-size [config.get("base-font-size")] - Font size of the element
+/// @return {Number} in em
 /// @example scss
 /// h1 {
-///     margin-bottom: adventure.em-calc(25px, adventure.font-size("large"));
-///     font-size: adventure.font-size("large");
+///     margin-bottom: scss-utilities.em-calc(25px, scss-utilities.font-size("large"));
+///     font-size: scss-utilities.font-size("large");
 /// }
-/// @param {Number} $value - Pixel-Wert
-/// @param {Number} $current-font-size [config.get("base-font-size")] - Schriftgröße des Elementes
-/// @return {Number} in em
 @function em-calc($value, $current-font-size: config.get("base-font-size")) {
     $value: rem-calc($value, $current-font-size);
     @return strip-unit($value) * 1em;
 }
 
-/// Entfernt die Einheit der übergebenen Zahl.
+/// Removes the unit from the given number.
 /// @param {Number} $number
-/// @return {Number} ohne Einheit
+/// @return {Number} without a unit
 @function strip-unit($number) {
     @if meta.type-of($number) != "number" {
         @warn meta.inspect($number) + " was passed to strip-unit(), which is not a number.";

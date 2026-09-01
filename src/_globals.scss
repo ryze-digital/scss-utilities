@@ -7,14 +7,14 @@
 @use "config";
 @use "breakpoint";
 
-/// Fügt alle globalen Basis-Stile ein. **Alle Adventure-Komponenten gehen davon aus, dass diese Stile vorhanden sind.**
+/// Includes all global base styles. **All scss-utilities components assume that these styles are present.**
 /// @param {Boolean} $html [true]
 /// @param {Boolean} $img [true]
 /// @param {Boolean} $iframe [true]
 /// @param {Boolean} $ul [true]
 /// @param {Boolean} $button [true]
-/// @param {Boolean} $provide-breakpoints [true] - Breakpoints an JS übergeben
-/// @param {String} $provide-breakpoints-pseudo-element ["after"] - Pseudo-Element, das zur Übergabe der Breakpoints an JS verwendet wird
+/// @param {Boolean} $provide-breakpoints [true] - Pass breakpoints to JS
+/// @param {String} $provide-breakpoints-pseudo-element ["after"] - Pseudo-element used to pass the breakpoints to JS
 @mixin global-styles(
     $universal: true,
     $html: true,
@@ -55,7 +55,7 @@
     }
 }
 
-/// Fügt Basis-Stile für alle Elemente ein.
+/// Includes base styles for all elements.
 @mixin global-universal-styles() {
     * {
         margin: 0;
@@ -73,9 +73,9 @@
     }
 }
 
-/// Fügt HTML-Basis-Stile ein.
-/// @param {Boolean} $provide-breakpoints [true] - Breakpoints an JS übergeben
-/// @param {String} $provide-breakpoints-pseudo-element ["after"] - Pseudo-Element, das zur Übergabe der Breakpoints an JS verwendet wird
+/// Includes HTML base styles.
+/// @param {Boolean} $provide-breakpoints [true] - Pass breakpoints to JS
+/// @param {String} $provide-breakpoints-pseudo-element ["after"] - Pseudo-element used to pass the breakpoints to JS
 @mixin global-html-styles($provide-breakpoints: true, $provide-breakpoints-pseudo-element: "after") {
     html {
         font: {
@@ -93,7 +93,7 @@
     }
 }
 
-/// Fügt Basis-Stile für Bilder ein.
+/// Includes base styles for images.
 @mixin global-img-styles() {
     img {
         display: inline-block;
@@ -103,7 +103,7 @@
     }
 }
 
-/// Fügt Basis-Stile für iFrames ein.
+/// Includes base styles for iframes.
 @mixin global-iframe-styles() {
     iframe {
         display: block;
@@ -111,7 +111,7 @@
     }
 }
 
-/// Fügt Basis-Stile für ungeordnete Listen ein.
+/// Includes base styles for unordered lists.
 @mixin global-ul-styles() {
     ul {
         list: {
@@ -122,7 +122,7 @@
     }
 }
 
-/// Fügt Basis-Stile für Buttons ein.
+/// Includes base styles for buttons.
 @mixin global-button-styles() {
     button {
         font: {
@@ -139,7 +139,7 @@
     }
 }
 
-/// Unterbindet Animationen, wenn Nutzer prefers-reduced-motion auf reduce gestellt haben
+/// Prevents animations when the user has set prefers-reduced-motion to reduce.
 @mixin reduce-motion() {
     @media (prefers-reduced-motion: reduce) {
         /* stylelint-disable declaration-no-important */

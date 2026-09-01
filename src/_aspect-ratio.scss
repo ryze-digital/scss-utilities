@@ -3,12 +3,12 @@
 ////
 @use "config";
 
-/// Dimensioniert einen Container im angegebenem Seitenverhältnis.
-/// @param {Number} $aspect-ratio [config.get("aspect-ratio")] - Seitenverhältnis im Format **Breite/Höhe**
-/// @param {Boolean} $stretch [false] - Soll der Inhalt des Containers auf die volle Höhe und Breite aufgestreckt werden?
+/// Sizes a container to the given aspect ratio.
+/// @param {Number} $aspect-ratio [config.get("aspect-ratio")] - Aspect ratio in the format **width/height**
+/// @param {Boolean} $stretch [false] - Should the container's content be stretched to the full height and width?
 /// @example
 /// .container {
-///     @include adventure.aspect-ratio(math.div(4, 3), true);
+///     @include scss-utilities.aspect-ratio(math.div(4, 3), true);
 /// }
 @mixin aspect-ratio($aspect-ratio: config.get("aspect-ratio"), $stretch: false) {
     @warn "The aspect-ratio() mixin is deprecated. Use the native aspect-ratio property instead.";

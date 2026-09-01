@@ -2,7 +2,7 @@
 /// @group 99-clearfix
 ////
 
-/// Hebt den Float im Container auf.
+/// Clears the float within the container.
 @mixin clearfix() {
     display: flow-root;
     @supports not (display: flow-root) {
@@ -11,7 +11,7 @@
     }
 }
 
-/// Hebt den Float im Container auf.
+/// Clears the float within the container.
 /// @deprecated
 @mixin -legacy-clearfix() {
     &::after {

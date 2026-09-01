@@ -8,9 +8,9 @@
 @use "config";
 @use "units";
 
-/// Gibt eine Schriftgröße aus der Konfiguration zurück.
-/// @param {String} $size - Key, der $sizes Map
-/// @param {Map} $sizes [config.get("font-sizes")] - Map, auf die der erste Parameter zugreift
+/// Returns a font size from the configuration.
+/// @param {String} $size - Key of the $sizes map
+/// @param {Map} $sizes [config.get("font-sizes")] - Map that the first parameter accesses
 /// @return {Number}
 @function font-size($size, $sizes: config.get("font-sizes")) {
     @if map.has-key($sizes, $size) {
@@ -40,8 +40,8 @@
     @error "A font-size named " + meta.inspect($size) + " could not be found in given map";
 }
 
-/// Stellt Text einzeilig dar und zeigt im Falle von Overflow Auslassungspunkte (…).
-/// @param {Number | Null} $max-width [null] - Wenn Auslassungspunkte dargestellt werden sollen, wird eine Breitenangabe benötigt
+/// Displays text on a single line and shows an ellipsis (…) in case of overflow.
+/// @param {Number | Null} $max-width [null] - A width is required if an ellipsis should be displayed
 @mixin single-line($max-width: null) {
     overflow: hidden;
     text: {
@@ -55,8 +55,8 @@
     }
 }
 
-/// Fügt dem Kind-Element öffnende und schließende Anführungszeichen hinzu.
-/// @param {String} $quotes [auto] - Value für das quotes Attribut
+/// Adds opening and closing quotation marks to the child element.
+/// @param {String} $quotes [auto] - Value for the quotes attribute
 @mixin quotes($quotes: auto) {
     @include open-quote($quotes) {
         @content;
@@ -66,8 +66,8 @@
     }
 }
 
-/// Fügt dem ersten Kind-Element öffnende Anführungszeichen hinzu.
-/// @param {String} $quotes [auto] - Value für das quotes Attribut
+/// Adds an opening quotation mark to the first child element.
+/// @param {String} $quotes [auto] - Value for the quotes attribute
 @mixin open-quote($quotes: auto) {
     quotes: $quotes;
     > * {
@@ -80,8 +80,8 @@
     }
 }
 
-/// Fügt dem letzten Kind-Element schließende Anführungszeichen hinzu.
-/// @param {String} $quotes [auto] - Value für das quotes Attribut
+/// Adds a closing quotation mark to the last child element.
+/// @param {String} $quotes [auto] - Value for the quotes attribute
 @mixin close-quote($quotes: auto) {
     quotes: $quotes;
     > * {
@@ -94,7 +94,7 @@
     }
 }
 
-/// Konvertiert kompatible Werte (px und unitless) in rem um. Lässt andere Werte, wie z.B. cm oder pt unberührt.
+/// Converts compatible values (px and unitless) to rem. Leaves other values, such as cm or pt, untouched.
 /// @param {Number} $value
 /// @return {Number}
 @function -convert-unit($value) {

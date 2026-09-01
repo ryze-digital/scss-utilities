@@ -5,9 +5,9 @@
 @use "sass:list";
 @use "config";
 
-/// Gibt einen z-index aus der Konfiguration zurück.
-/// @param {String | Number} $key - Key, der $z-indices Liste oder eigener Wert
-/// @param {List} $z-indices [config.get("z-indices")] - Liste, auf die der erste Parameter zugreift
+/// Returns a z-index from the configuration.
+/// @param {String | Number} $key - Key of the $z-indices list or custom value
+/// @param {List} $z-indices [config.get("z-indices")] - List that the first parameter accesses
 /// @return {Number}
 @function z-index($key, $z-indices: config.get("z-indices")) {
     @if meta.type-of($key) == "number" {

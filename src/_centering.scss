@@ -2,8 +2,8 @@
 /// @group 10-centering
 ////
 
-/// Zentriert ein Element vertikal und horizontal.
-/// @param {String | Null} $position [absolute] - Wert für die CSS Eigenschaft position
+/// Centers an element vertically and horizontally.
+/// @param {String | Null} $position [absolute] - Value for the CSS position property
 @mixin absolute-center($position: absolute) {
     position: $position;
     inset: {
@@ -17,8 +17,8 @@
     translate: -50% -50%;
 }
 
-/// Zentriert ein Element vertikal.
-/// @param {String | Null} $position [absolute] - Wert für die CSS-Eigenschaft position
+/// Centers an element vertically.
+/// @param {String | Null} $position [absolute] - Value for the CSS position property
 @mixin vertical-center($position: absolute) {
     position: $position;
     inset: {
@@ -29,8 +29,8 @@
     transform: translateY(-50%);
 }
 
-/// Zentriert ein Element horizontal.
-/// @param {String | Null} $position [absolute] - Wert für die CSS-Eigenschaft position
+/// Centers an element horizontally.
+/// @param {String | Null} $position [absolute] - Value for the CSS position property
 @mixin horizontal-center($position: absolute) {
     position: $position;
     inset: {
