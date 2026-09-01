@@ -1,0 +1,164 @@
+////
+/// @group 13-ai
+////
+@use "sass:list";
+@use "sass:map";
+@use "sass:math";
+@use "sass:meta";
+@use "direction";
+@use "units";
+
+$-vertical-keyword-map: (
+    top: start,
+    bottom: end
+);
+$-horizontal-keyword-map: (
+    left: start,
+    right: end
+);
+
+@function -get-keyword-for-side($keyword, $sides, $fallback) {
+    @if not $keyword {
+        @return map.get($sides, $fallback);
+    }
+
+    @if not map.has-key($sides, $keyword) {
+        @error "Unknown value `#{$keyword}` for $place. Allowed values are top, right, bottom, and left";
+    }
+
+    @return map.get($sides, $keyword);
+}
+
+/// Validates that $position is relative or absolute, since the label pseudo-element requires one of these to be positioned correctly.
+/// @param {String} $position
+/// @return {String}
+@function -validate-position($position) {
+    $valid-positions: relative, absolute;
+
+    @if not list.index($valid-positions, $position) {
+        @warn meta.inspect($position) + " was passed to ai-label(), which is not relative or absolute. The label might not be positioned correctly.";
+    }
+
+    @return $position;
+}
+
+/// Adds an AI label badge to an element (e.g. to fulfil the EU AI Act labeling requirements for AI-generated or AI-modified content). Which label is shown is controlled via the **data-ai-label** attribute; its corner can additionally be overridden at runtime via the **data-ai-label-placement** attribute.
+/// @param {String | List} $place [bottom right] - Default corner(s) the label is placed in
+/// @param {Number} $spacing [0] - Distance between the label and the edges of the wrapper
+/// @param {Map} $images - Map of available labels; each entry provides a file name, inline-size, and block-size
+/// @param {String} $position [relative] - Value for the CSS position property applied to the element; must be **relative** or **absolute** so the label pseudo-element can be positioned correctly
+/// @param {String} $media-element [img, video] - Selector for the child element (e.g. an image or video) the label is layered on top of; also receives the passed @content
+/// @param {String} $pseudo-element [after] - Pseudo-element used to render the label
+/// @param {Number | Null} $z-index [null] - z-index for $media-element; the label itself receives $z-index + 1
+/// @example scss
+/// .card {
+///     @include scss-utilities.ai-label() {
+///         width: 100%;
+///     }
+/// }
+/// // <div class="card">
+/// //     <img src="generated-image.jpg" data-ai-label="generated" data-ai-label-placement="top left">
+/// // </div>
+@mixin ai-label(
+    $place: bottom right,
+    $spacing: 0,
+    $images: (
+        "generic": (
+            "name": "LABEL_AI_black.svg",
+            "inline-size": units.rem-calc(40px),
+            "block-size": units.rem-calc(40px)
+        ),
+        "modified": (
+            "name": "LABEL_AI MODIFIED_black.svg",
+            "inline-size": units.rem-calc(120px),
+            "block-size": units.rem-calc(40px)
+        ),
+        "generated": (
+            "name": "LABEL_AI GENERATED_black.svg",
+            "inline-size": units.rem-calc(126px),
+            "block-size": units.rem-calc(40px)
+        )
+    ),
+    $position: relative,
+    $media-element: (img, video),
+    $pseudo-element: after,
+    $z-index: null
+) {
+    $vertical: null;
+    $horizontal: null;
+    $pseudo-z-index: if(sass($z-index): $z-index + 1; else: 1);
+
+    @each $keyword in $place {
+        @if map.has-key($-vertical-keyword-map, $keyword) {
+            $vertical: $keyword;
+        } @else if map.has-key($-horizontal-keyword-map, $keyword) {
+            $horizontal: $keyword;
+        } @else {
+            @error "Unknown value `#{$keyword}` for $place. Allowed values are top, right, bottom, and left";
+        }
+    }
+    position: -validate-position($position);
+    #{$media-element} {
+        z: {
+            index: $z-index;
+        }
+        @content;
+    }
+    &::#{$pseudo-element} {
+        content: "";
+        display: block;
+        position: absolute;
+        inset: {
+            block: {
+                #{-get-keyword-for-side($vertical, $-vertical-keyword-map, top)}: var(--spacing, #{$spacing});
+            }
+            inline: {
+                #{-get-keyword-for-side($horizontal, $-horizontal-keyword-map, right)}: var(--spacing, #{$spacing});
+            }
+        }
+        z: {
+            index: $pseudo-z-index;
+        }
+        background: {
+            image: var(--background-image-url);
+            size: 100% 100%;
+            position: center center;
+            repeat: no-repeat;
+        }
+        aspect: {
+            ratio: var(--aspect-ratio);
+        }
+        inline: {
+            size: var(--inline-size);
+        }
+    }
+    @each $label, $image in $images {
+        &[data-ai-label="#{$label}"] {
+            --background-image-url: url("#{map.get($image, "name")}");
+            --inline-size: #{map.get($image, "inline-size")};
+            --aspect-ratio: #{math.div(map.get($image, "inline-size"), map.get($image, "block-size"))};
+        }
+    }
+    @each $keyword, $side in $-vertical-keyword-map {
+        $opposite: direction.opposite-direction($side);
+        &[data-ai-label-placement~="#{$keyword}"]::#{$pseudo-element} {
+            inset: {
+                block: {
+                    #{$side}: var(--spacing, #{$spacing});
+                    #{$opposite}: auto;
+                }
+            }
+        }
+    }
+    @each $keyword, $side in $-horizontal-keyword-map {
+        $opposite: direction.opposite-direction($side);
+        &[data-ai-label-placement~="#{$keyword}"]::#{$pseudo-element} {
+            inset: {
+                inline: {
+                    #{$side}: var(--spacing, #{$spacing});
+                    #{$opposite}: auto;
+                }
+            }
+        }
+    }
+}
