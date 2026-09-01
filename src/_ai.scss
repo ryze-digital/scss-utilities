@@ -86,7 +86,7 @@ $-horizontal-keyword-map: (
 ) {
     $vertical: null;
     $horizontal: null;
-    $pseudo-z-index: if(sass($z-index): $z-index + 1; else: 1);
+    $pseudo-z-index: if($z-index, $z-index + 1, 1);
 
     @each $keyword in $place {
         @if map.has-key($-vertical-keyword-map, $keyword) {
