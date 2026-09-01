@@ -1,0 +1,32 @@
+////
+/// @group 14-direction
+////
+@use "sass:map";
+
+$-opposites: (
+    start: end,
+    end: start,
+    top: bottom,
+    bottom: top,
+    left: right,
+    right: left,
+    center: center,
+    ltr: rtl,
+    rtl: ltr
+);
+
+/// Returns the opposite of a direction or logical position keyword.
+/// @param {String} $keyword - One of start, end, top, bottom, left, right, center, ltr, or rtl
+/// @return {String}
+/// @example scss
+/// .element {
+///     $opposite: scss-utilities.opposite-direction(start); // end
+///     $opposite: scss-utilities.opposite-direction(left); // right
+/// }
+@function opposite-direction($keyword) {
+    @if not map.has-key($-opposites, $keyword) {
+        @error "Unknown value `#{$keyword}` for $keyword. Allowed values are start, end, top, bottom, left, right, center, ltr, and rtl";
+    }
+
+    @return map.get($-opposites, $keyword);
+}
