@@ -43,9 +43,11 @@ $-horizontal-keyword-map: (
 }
 
 /// Adds an AI label badge to an element (e.g. to fulfil the EU AI Act labeling requirements for AI-generated or AI-modified content). Which label is shown is controlled via the **data-ai-label** attribute; its corner can additionally be overridden at runtime via the **data-ai-label-placement** attribute.
+///
+/// The size of all labels can be changed at once (e.g. inside a breakpoint) by setting the **--block-size** custom property on the element. Every label keeps its own aspect ratio, so its inline-size follows automatically. The distance to the edges can be changed the same way via **--spacing**.
 /// @param {String | List} $place [bottom right] - Default corner(s) the label is placed in
 /// @param {Number} $spacing [0] - Distance between the label and the edges of the wrapper
-/// @param {Map} $images - Map of available labels; each entry provides a file name, inline-size, and block-size
+/// @param {Map} $images - Map of available labels; each entry provides a file name, inline-size, and block-size; the aspect ratio of each label is derived from these two dimensions
 /// @param {String} $position [relative] - Value for the CSS position property applied to the element; must be **relative** or **absolute** so the label pseudo-element can be positioned correctly
 /// @param {String} $media-element [img, video] - Selector for the child element (e.g. an image or video) the label is layered on top of; also receives the passed @content
 /// @param {String} $pseudo-element [after] - Pseudo-element used to render the label
@@ -54,6 +56,11 @@ $-horizontal-keyword-map: (
 /// .card {
 ///     @include scss-utilities.ai-label() {
 ///         width: 100%;
+///     }
+///
+///     @include scss-utilities.breakpoint(large) {
+///         --block-size: #{scss-utilities.rem-calc(60px)};
+///         --spacing: #{scss-utilities.rem-calc(10px)};
 ///     }
 /// }
 /// // <div class="card">
@@ -120,23 +127,23 @@ $-horizontal-keyword-map: (
             index: $pseudo-z-index;
         }
         background: {
-            image: var(--background-image-url);
+            image: var(--ai-label-image);
             size: 100% 100%;
             position: center center;
             repeat: no-repeat;
         }
         aspect: {
-            ratio: var(--aspect-ratio);
+            ratio: var(--ai-label-aspect-ratio);
         }
-        inline: {
-            size: var(--inline-size);
+        block: {
+            size: var(--block-size, var(--ai-label-block-size));
         }
     }
     @each $label, $image in $images {
         &[data-ai-label="#{$label}"] {
-            --background-image-url: url("#{map.get($image, "name")}");
-            --inline-size: #{map.get($image, "inline-size")};
-            --aspect-ratio: #{math.div(map.get($image, "inline-size"), map.get($image, "block-size"))};
+            --ai-label-image: url("#{map.get($image, "name")}");
+            --ai-label-block-size: #{map.get($image, "block-size")};
+            --ai-label-aspect-ratio: #{math.div(map.get($image, "inline-size"), map.get($image, "block-size"))};
         }
     }
     @each $keyword, $side in $-vertical-keyword-map {
