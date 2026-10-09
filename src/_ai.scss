@@ -42,11 +42,23 @@ $-horizontal-keyword-map: (
     @return $position;
 }
 
+/// Validates that $spacing carries a unit, since a unitless value makes the calc() for max-inline-size invalid.
+/// @param {Number} $spacing
+/// @return {Number}
+@function -validate-spacing($spacing) {
+    @if math.is-unitless($spacing) {
+        @warn meta.inspect($spacing) + " was passed to ai-label() as $spacing without a unit. The label will not keep its spacing when it is capped by the wrapper; use 0px instead of 0.";
+    }
+
+    @return $spacing;
+}
+
 /// Adds an AI label badge to an element (e.g. to fulfil the EU AI Act labeling requirements for AI-generated or AI-modified content). Which label is shown is controlled via the **data-ai-label** attribute; its corner can additionally be overridden at runtime via the **data-ai-label-placement** attribute.
-///
-/// The size of all labels can be changed at once (e.g. inside a breakpoint) by setting the **--block-size** custom property on the element. Every label keeps its own aspect ratio, so its inline-size follows automatically. The distance to the edges can be changed the same way via **--spacing**.
+/// The size of all labels can be changed at once (e.g. inside a breakpoint) by setting the **--block-size** custom property on the element. Every label keeps its own aspect ratio, so its inline-size follows automatically. Any length works, including clamp() and container units like cqb; only bare percentages are not supported, because the label is sized along its inline axis and a percentage would resolve against the wrapper's inline-size. The distance to the edges can be changed the same way via **--spacing**.
+/// A label never grows wider than its wrapper: if the wrapper is narrower than the label (including the spacing on both sides), the label shrinks proportionally.
+/// Both custom properties inherit like any other custom property, so a property of the same name on an ancestor (e.g. a **--spacing** token on the root element) is picked up by the label as well.
 /// @param {String | List} $place [bottom right] - Default corner(s) the label is placed in
-/// @param {Number} $spacing [0] - Distance between the label and the edges of the wrapper
+/// @param {Number} $spacing [0px] - Distance between the label and the edges of the wrapper; must carry a unit
 /// @param {Map} $images - Map of available labels; each entry provides a file name, inline-size, and block-size; the aspect ratio of each label is derived from these two dimensions
 /// @param {String} $position [relative] - Value for the CSS position property applied to the element; must be **relative** or **absolute** so the label pseudo-element can be positioned correctly
 /// @param {String} $media-element [img, video] - Selector for the child element (e.g. an image or video) the label is layered on top of; also receives the passed @content
@@ -68,7 +80,8 @@ $-horizontal-keyword-map: (
 /// // </div>
 @mixin ai-label(
     $place: bottom right,
-    $spacing: 0,
+    /* stylelint-disable-next-line length-zero-no-unit -- the unit keeps the fallback valid inside calc() */
+    $spacing: 0px,
     $images: (
         "generic": (
             "name": "LABEL_AI_black.svg",
@@ -94,6 +107,7 @@ $-horizontal-keyword-map: (
     $vertical: null;
     $horizontal: null;
     $pseudo-z-index: if($z-index, $z-index + 1, 1);
+    $spacing: -validate-spacing($spacing);
 
     @each $keyword in $place {
         @if map.has-key($-vertical-keyword-map, $keyword) {
@@ -127,23 +141,29 @@ $-horizontal-keyword-map: (
             index: $pseudo-z-index;
         }
         background: {
-            image: var(--ai-label-image);
             size: 100% 100%;
             position: center center;
             repeat: no-repeat;
         }
-        aspect: {
-            ratio: var(--ai-label-aspect-ratio);
-        }
-        block: {
-            size: var(--block-size, var(--ai-label-block-size));
+        max: {
+            inline: {
+                size: calc(100% - 2 * var(--spacing, #{$spacing}));
+            }
         }
     }
     @each $label, $image in $images {
-        &[data-ai-label="#{$label}"] {
-            --ai-label-image: url("#{map.get($image, "name")}");
-            --ai-label-block-size: #{map.get($image, "block-size")};
-            --ai-label-aspect-ratio: #{math.div(map.get($image, "inline-size"), map.get($image, "block-size"))};
+        $aspect-ratio: math.div(map.get($image, "inline-size"), map.get($image, "block-size"));
+
+        &[data-ai-label="#{$label}"]::#{$pseudo-element} {
+            background: {
+                image: url("#{map.get($image, "name")}");
+            }
+            aspect: {
+                ratio: $aspect-ratio;
+            }
+            inline: {
+                size: min(var(--block-size, #{map.get($image, "block-size")}) * #{$aspect-ratio}, 100%);
+            }
         }
     }
     @each $keyword, $side in $-vertical-keyword-map {
