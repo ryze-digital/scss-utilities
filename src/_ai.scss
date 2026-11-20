@@ -109,8 +109,12 @@ $-horizontal-keyword-map: (
 ) {
     $vertical: null;
     $horizontal: null;
-    $pseudo-z-index: if($z-index, $z-index + 1, 1);
+    $pseudo-z-index: 1;
     $spacing: -validate-spacing($spacing);
+
+    @if $z-index {
+        $pseudo-z-index: $z-index + 1;
+    }
 
     @each $keyword in $place {
         @if map.has-key($-vertical-keyword-map, $keyword) {
