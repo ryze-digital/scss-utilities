@@ -10,11 +10,11 @@
 
 $-vertical-keyword-map: (
     top: start,
-    bottom: end
+    bottom: end,
 );
 $-horizontal-keyword-map: (
     left: start,
-    right: end
+    right: end,
 );
 
 @function -get-keyword-for-side($keyword, $sides, $fallback) {
@@ -81,26 +81,29 @@ $-horizontal-keyword-map: (
 @mixin ai-label(
     $place: bottom right,
     /* stylelint-disable-next-line length-zero-no-unit -- the unit keeps the fallback valid inside calc() */
-    $spacing: 0px,
+        $spacing: 0px,
     $images: (
         "generic": (
             "name": "LABEL_AI_black.svg",
             "inline-size": units.rem-calc(40px),
-            "block-size": units.rem-calc(40px)
+            "block-size": units.rem-calc(40px),
         ),
         "modified": (
             "name": "LABEL_AI MODIFIED_black.svg",
             "inline-size": units.rem-calc(120px),
-            "block-size": units.rem-calc(40px)
+            "block-size": units.rem-calc(40px),
         ),
         "generated": (
             "name": "LABEL_AI GENERATED_black.svg",
             "inline-size": units.rem-calc(126px),
-            "block-size": units.rem-calc(40px)
-        )
+            "block-size": units.rem-calc(40px),
+        ),
     ),
     $position: relative,
-    $media-element: (img, video),
+    $media-element: (
+        img,
+        video,
+    ),
     $pseudo-element: after,
     $z-index: null
 ) {

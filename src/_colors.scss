@@ -31,7 +31,8 @@
 ///     }
 /// }
 @function hex2hsl($hex-value) {
-    @return color.channel($hex-value, "hue", $space: hsl) color.channel($hex-value, "saturation", $space: hsl) color.channel($hex-value, "lightness", $space: hsl);
+    @return color.channel($hex-value, "hue", $space: hsl) color.channel($hex-value, "saturation", $space: hsl)
+        color.channel($hex-value, "lightness", $space: hsl);
 }
 
 /// Generates custom properties for a color.
@@ -42,7 +43,8 @@
     --#{$custom-property-name}-h: #{color.channel($color, "hue", $space: hsl)};
     --#{$custom-property-name}-s: #{color.channel($color, "saturation", $space: hsl)};
     --#{$custom-property-name}-l: #{color.channel($color, "lightness", $space: hsl)};
-    --#{$custom-property-name}-hsl: var(--#{$custom-property-name}-h) var(--#{$custom-property-name}-s) var(--#{$custom-property-name}-l);
+    --#{$custom-property-name}-hsl: var(--#{$custom-property-name}-h) var(--#{$custom-property-name}-s)
+        var(--#{$custom-property-name}-l);
 }
 
 /// Generates custom properties for an entire color palette.

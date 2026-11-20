@@ -1,1 +1,2 @@
-.stylelintrc
+stylelint.config.js
+prettier.config.js

@@ -37,6 +37,9 @@
     @supports (content: $name / "") {
         --icon: "#{$name}" / "";
     }
+
+    // Keeps the declaration after the nested rule without Sass "mixed-decls" deprecation warnings
+    // stylelint-disable-next-line block-no-redundant-nested-style-rules
     & {
         content: var(--icon);
     }

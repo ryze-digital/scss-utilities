@@ -59,7 +59,12 @@
 ///         text-align: center;
 ///     }
 /// }
-@mixin breakpoint-between($breakpoint-from, $breakpoint-to, $feature: "width", $breakpoints: config.get("breakpoints")) {
+@mixin breakpoint-between(
+    $breakpoint-from,
+    $breakpoint-to,
+    $feature: "width",
+    $breakpoints: config.get("breakpoints")
+) {
     $breakpoint-from-value: -convert-value($breakpoint-from, $breakpoints);
     $breakpoint-to-value: -convert-value($breakpoint-to, $breakpoints);
     $feature-value: -validate-feature($feature);
